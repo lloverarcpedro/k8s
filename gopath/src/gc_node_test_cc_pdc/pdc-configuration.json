@@ -1,0 +1,23 @@
+[
+    {
+       "name": "loadCollection",
+       "policy": "OR('GrainchainMSP.member', 'SilosysMSP.member')",
+       "requiredPeerCount": 0,
+       "maxPeerCount": 3,
+       "blockToLive":0,
+       "memberOnlyRead": true,
+       "memberOnlyWrite": true
+    },
+    {
+       "name": "loadPricesPrivateDetailsCollection",
+       "policy": "OR('GrainchainMSP.member','CommodityMSP.member')",
+       "requiredPeerCount": 0,
+       "maxPeerCount": 3,
+       "blockToLive":0,
+       "memberOnlyRead": true,
+       "memberOnlyWrite":true,
+       "endorsementPolicy": {
+         "signaturePolicy": "OR('GrainchainMSP.member','CommodityMSP.member')"
+       }
+    }
+   ]
