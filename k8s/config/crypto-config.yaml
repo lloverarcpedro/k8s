@@ -1,0 +1,69 @@
+# Defines four organizations
+#  - Orderer organization
+#  - Acme
+#  - Budget
+#  - Expo
+##### Orderer for grainchain
+OrdererOrgs:
+  - Name: Orderer
+    Domain: grainchain.io
+    EnableNodeOUs: true
+    Specs:
+      - Hostname: orderer1
+        SANS: 
+          - grainchain-orderer-clusterip
+      - Hostname: orderer2
+        SANS:  
+          - grainchain-orderer2-clusterip
+      - Hostname: orderer3
+        SANS:  
+          - grainchain-orderer3-clusterip
+      - Hostname: orderer4
+        SANS:  
+          - grainchain-orderer4-clusterip
+      - Hostname: orderer5
+        SANS:  
+          - grainchain-orderer5-clusterip
+      
+#### Peers for acme
+PeerOrgs:
+  # Peer configuration for grainchain
+  - Name: Grainchain
+    Domain: grainchain.io
+    EnableNodeOUs: true
+    Specs:
+      - Hostname: peer1.grainchain.io
+        CommonName: peer1.grainchain.io
+      - Hostname: peer2.grainchain.io
+        CommonName: peer2.grainchain.io
+      - Hostname: peer3.grainchain.io
+        CommonName: peer3.grainchain.io
+    Users:
+      Count: 1
+
+  # Peer configuration for Budget
+  - Name: Commodity
+    Domain: commodity.io
+    EnableNodeOUs: true
+    Specs:
+      - Hostname: peer1.commodity.io
+        CommonName: peer1.commodity.io
+      - Hostname: peer2.commodity.io
+        CommonName: peer2.commodity.io
+      - Hostname: peer3.commodity.io
+        CommonName: peer3.commodity.io
+    Users:
+      Count: 1
+
+  # Peer configuration for Budget
+  - Name: Silosys
+    Domain: silosys.io
+    EnableNodeOUs: true
+    Specs:
+      - Hostname: peer1.silosys.io
+        CommonName: peer1.silosys.io
+    Users:
+      Count: 1
+
+
+      

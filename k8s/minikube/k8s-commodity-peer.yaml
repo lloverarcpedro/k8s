@@ -1,0 +1,105 @@
+# YAML for launching the orderer
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: commodity-peer1
+  labels:
+    app: commodity-peer1
+spec:
+  serviceName: commodity-peer1
+  replicas: 1
+  selector:
+    matchLabels:
+      app: commodity-peer1
+  template:
+    metadata:
+      labels:
+        app: commodity-peer1
+    spec:
+      containers:
+      - name: commodity-peer1
+        # image used
+        image: pedrollovera/k8s-hlf-commodity-peer1:3.4
+        # Uncomment the following during development/testing of the image
+        # imagePullPolicy: Always
+        env:
+          - name: FABRIC_CFG_PATH
+            value: /var/hyperledger/config
+          - name: FABRIC_LOGGING_SPEC
+            value: INFO
+          - name: ORDERER_ADDRESS
+            value: acme-orderer-clusterip:30750
+          - name: ORG_CONTEXT
+            value: commodity
+          - name: CORE_PEER_ADDRESS
+          # value: commodity-peer1-clusterip:30851
+            value: localhost:30851
+        volumeMounts:
+        - name: commodity-peer1-ledger
+          mountPath: /var/ledger
+        - name: dockersock
+          mountPath: /var/run/docker.sock
+      volumes:
+      - name: dockersock
+        hostPath:
+          path: /var/run/docker.sock
+  volumeClaimTemplates:
+  - metadata: 
+      name: commodity-peer1-ledger
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: general
+      resources:
+        requests:
+          storage: 1Gi
+
+
+
+---
+# Expose the port 30851 as ClusterIP
+apiVersion: v1
+kind: Service
+metadata:
+  name: commodity-peer1-clusterip
+
+spec:
+  # This defines which pods are going to be represented by this Service
+  # The service becomes a network endpoint for either other services
+  # or maybe external users to connect to (eg browser)
+  selector:
+    app: commodity-peer1
+
+  ports:
+    - name: commodity-peer1-clusterip
+      port: 30851
+    # - name: commodity-peer1-cc-clusterip
+    #   port: 30852
+
+  type: ClusterIP
+
+---
+# Expose the port 30851 as node port -  NEEDED if you
+# are interested in connecting to the Pods from the Host
+# machine - keep in mind you would need the IP for the node
+# port service
+apiVersion: v1
+kind: Service
+metadata:
+  name: commodity-peer1-nodeport
+
+spec:
+  # This defines which pods are going to be represented by this Service
+  # The service becomes a network endpoint for either other services
+  # or maybe external users to connect to (eg browser)
+  selector:
+    app: commodity-peer1
+
+  ports:
+    - name: commodity-peer1-nodeport-851
+      port: 30851
+      nodePort: 30851
+    - name: commodity-peer1-cc-nodeport-852
+      port: 30852
+      nodePort: 30852
+
+  type: NodePort

@@ -1,0 +1,112 @@
+# YAML for launching the orderer
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: grainchain-orderer4
+  labels:
+    app: grainchain-orderer4
+spec:
+  serviceName: orderer4
+  # Single instance of the orderer4 Pod is needed
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grainchain-orderer4
+  template:
+    metadata:
+      labels:
+        app: grainchain-orderer4
+    spec:
+      containers:
+      - name: grainchain-orderer4
+
+        # Image used
+        image: pedrollovera/k8s-hlf-grainchain-orderer4:3.4
+
+        # Uncomment the following during development/testing of the image
+        # imagePullPolicy: Always
+        env:
+          # Points to the orderer4.yaml
+          - name: FABRIC_CFG_PATH
+            value: /var/hyperledger/config
+          # Level of logging
+          - name: FABRIC_LOGGING_SPEC
+            value: INFO
+            #/var/hyperledger/orderer4.grainchain.io/tls/
+          # TLS SETUP
+          - name: ORDERER_GENERAL_TLS_ENABLED
+            value: "true"
+          - name: ORDERER_GENERAL_TLS_CERTIFICATE
+            value: /var/hyperledger/orderer.grainchain.io/tls-msp/signcerts/cert.pem
+          - name: ORDERER_GENERAL_TLS_PRIVATEKEY
+            value: /var/hyperledger/orderer.grainchain.io/tls-msp/keystore/key.pem
+          - name: ORDERER_GENERAL_TLS_ROOTCAS
+            value: /var/hyperledger/orderer.grainchain.io/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem
+          # RAFT SETUP
+          - name: ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE
+            value: /var/hyperledger/orderer.grainchain.io/tls-msp/signcerts/cert.pem
+          - name: ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY
+            value: /var/hyperledger/orderer.grainchain.io/tls-msp/keystore/key.pem
+          - name: ORDERER_GENERAL_CLUSTER_ROOTCAS
+            value: /var/hyperledger/orderer.grainchain.io/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem
+      
+
+        volumeMounts:
+        # This is pointing to the PVC
+        - name: orderer4-ledger
+          mountPath: /var/ledger
+
+
+  volumeClaimTemplates:
+  - metadata: 
+      name: orderer4-ledger
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: general
+      resources:
+        requests:
+          storage: 1Gi
+
+---
+# Expose the port 7050 as ClusterIP
+apiVersion: v1
+kind: Service
+metadata:
+  name: grainchain-orderer4-clusterip
+
+spec:
+  # This defines which pods are going to be represented by this Service
+  # The service becomes a network endpoint for either other services
+  # or maybe external users to connect to (eg browser)
+  selector:
+    app: grainchain-orderer4
+
+  ports:
+    - name: grainchain-orderer4-clusterip
+      port: 30450
+
+  type: ClusterIP
+
+---
+# Expose the port 30450 as node port - NEEDED if you
+# are interested in connecting to the Pods from the Host
+# machine - keep in mind you would need the IP for the node
+# port service
+apiVersion: v1
+kind: Service
+metadata:
+  name: grainchain-orderer4-nodeport
+
+spec:
+  # This defines which pods are going to be represented by this Service
+  # The service becomes a network endpoint for either other services
+  # or maybe external users to connect to (eg browser)
+  selector:
+    app: grainchain-orderer4
+
+  ports:
+    - name: grainchain-orderer4-nodeport
+      port: 30450
+      nodePort: 30450
+
+  type: NodePort

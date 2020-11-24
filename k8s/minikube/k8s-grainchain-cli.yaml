@@ -1,0 +1,126 @@
+# YAML for launching the orderer
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: grainchain-cli
+  labels:
+    app: grainchain-cli
+spec:
+  serviceName: grainchain-cli
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grainchain-cli
+  template:
+    metadata:
+      labels:
+        app: grainchain-cli
+    spec:
+      containers:
+      - name: grainchain-cli
+        # Image used
+        image: pedrollovera/k8s-hlf-grainchain-cli:3.5
+        # Uncomment the following during development/testing of the image
+        # imagePullPolicy: Always
+        env:
+          - name: FABRIC_CFG_PATH
+            value: /var/hyperledger/config
+          - name: FABRIC_LOGGING_SPEC
+            value: INFO
+          - name: CORE_PEER_TLS_ENABLED
+            value: "true"
+          - name: CORE_PEER_TLS_CERT_FILE
+            value: /var/hyperledger/peer1.grainchain.io/tls-msp/signcerts/cert.pem
+          - name: CORE_PEER_TLS_KEY_FILE
+            value: /var/hyperledger/peer1.grainchain.io/tls-msp/keystore/key.pem
+          - name: CORE_PEER_TLS_ROOTCERT_FILE
+            value: /var/hyperledger/peer1.grainchain.io/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem
+          - name: ORDERER_ADDRESS
+            value: grainchain-orderer-clusterip:30750
+          - name: ORDERER_ADDRESS
+            value: grainchain-orderer2-clusterip:30650
+          - name: ORDERER_ADDRESS
+            value: grainchain-orderer3-clusterip:30550
+          - name: ORDERER_ADDRESS
+            value: grainchain-orderer4-clusterip:30450
+          - name: ORDERER_ADDRESS
+            value: grainchain-orderer5-clusterip:30350
+          - name: ORG_CONTEXT
+            value: grainchain
+          - name: CORE_PEER_ADDRESS
+          # value: grainchain-peer1-clusterip:30751
+            value: localhost:30751
+          # Replacement for set-context in alpine
+          # - name: MSP_ID
+          #   value: grainchainMSP
+          # - name: ORG_NAME
+          #   value: grainchainMSP
+          # - name: CORE_PEER_MSPCONFIGPATH
+          #   value:  /var/hyperledger/config/users/Admin@grainchain.io/msp
+        volumeMounts:
+        - name: grainchain-cli-ledger
+          mountPath: /var/ledger
+        - name: dockersock
+          mountPath: /var/run/docker.sock
+      volumes:
+      - name: dockersock
+        hostPath:
+          path: /var/run/docker.sock
+  volumeClaimTemplates:
+  - metadata: 
+      name: grainchain-cli-ledger
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: general
+      resources:
+        requests:
+          storage: 1Gi
+
+# ---
+# Expose the port 7051 as ClusterIP
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: grainchain-cli-clusterip
+
+# spec:
+  # This defines which pods are going to be represented by this Service
+  # The service becomes a network endpoint for either other services
+  # or maybe external users to connect to (eg browser)
+  # selector:
+  #   app: grainchain-cli
+
+  # ports:
+  #   - name: grainchain-cli-clusterip
+  #     port: 30751
+  #   - name: grainchain-cli-cc-clusterip
+  #     port: 30752
+
+  # type: ClusterIP
+
+# ---
+# Expose the port 30751 as node port -  NEEDED if you
+# are interested in connecting to the Pods from the Host
+# machine - keep in mind you would need the IP for the node
+# port service
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: grainchain-cli-nodeport
+
+# spec:
+  # This defines which pods are going to be represented by this Service
+  # The service becomes a network endpoint for either other services
+  # or maybe external users to connect to (eg browser)
+  # selector:
+  #   app: grainchain-cli
+
+  # ports:
+  #   - name: grainchain-cli-nodeport-751
+  #     port: 30751
+  #     nodePort: 30751
+  #   - name: grainchain-cli-cc-nodeport-752
+  #     port: 30752
+  #     nodePort: 30752
+
+  # type: NodePort

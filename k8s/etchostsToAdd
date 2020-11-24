@@ -1,9 +1,0 @@
-10.101.207.179   orderer1.grainchain.io  orderer1
-10.99.197.245     orderer2.grainchain.io  orderer2
-10.111.3.17   orderer3.grainchain.io  orderer3
-10.102.16.72   orderer4.grainchain.io  orderer4
-10.101.38.91  orderer5.grainchain.io  orderer5
-10.99.52.74  peer1-harvx.grainchain.io   org1peer0
-10.107.172.180   peer2-harvx.grainchain.io   org1peer1
-10.102.63.67    peer1-commodity.grainchain.io   org2peer0
-10.110.127.48   peer2-commodity.grainchain.io   org2peer1
