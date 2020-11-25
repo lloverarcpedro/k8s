@@ -29,12 +29,14 @@ spec:
             value: INFO
           - name: CORE_PEER_TLS_ENABLED
             value: "true"
+          - name: CORE_PEER_MSPCONFIGPATH
+            value: /var/hyperledger/peers/peer1-harvx-grainchain-io/msp
           - name: CORE_PEER_TLS_CERT_FILE
-            value: /var/hyperledger/peer1.grainchain.io/tls-msp/signcerts/cert.pem
+            value: /var/hyperledger/peers/peer1-harvx-grainchain-io/tls-msp/signcerts/cert.pem
           - name: CORE_PEER_TLS_KEY_FILE
-            value: /var/hyperledger/peer1.grainchain.io/tls-msp/keystore/key.pem
+            value: /var/hyperledger/peers/peer1-harvx-grainchain-io/tls-msp/keystore/key.pem
           - name: CORE_PEER_TLS_ROOTCERT_FILE
-            value: /var/hyperledger/peer1.grainchain.io/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem
+            value: /var/hyperledger/peers/peer1-harvx-grainchain-io/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem
           - name: ORDERER_ADDRESS
             value: grainchain-orderer-clusterip:30750
           - name: ORDERER_ADDRESS

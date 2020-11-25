@@ -19,7 +19,7 @@ spec:
       containers:
       - name: grainchain-peer2
         # Image used
-        image: pedrollovera/k8s-hlf-grainchain-peer2:3.4
+        image: pedrollovera/k8s-hlf-grainchain-peer2:3.5
         # Uncomment the following during development/testing of the image
         # imagePullPolicy: Always
         env:

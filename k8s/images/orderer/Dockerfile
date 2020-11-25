@@ -8,9 +8,10 @@ LABEL  maintainer="pllovera@grainchain.io"
 #2. Create the folder for configurations
 RUN mkdir -p /var/hyperledger/config
 RUN mkdir -p /var/hyperledger/orgMSP
+RUN mkdir -p /var/hyperledger/orderers
 
 #3. Copy the crypto for orderer
-COPY ./config/crypto-config/ordererOrganizations/orderers/orderers/orderer1-grainchain-io /var/hyperledger/orderer.grainchain.io
+COPY ./config/crypto-config/ordererOrganizations/orderers/orderers /var/hyperledger/orderers
 COPY ./config/crypto-config/ordererOrganizations/orderers/msp /var/hyperledger/orgMSP
 
 #4. Copy the genesis file

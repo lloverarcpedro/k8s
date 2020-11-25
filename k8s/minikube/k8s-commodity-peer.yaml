@@ -19,7 +19,7 @@ spec:
       containers:
       - name: commodity-peer1
         # image used
-        image: pedrollovera/k8s-hlf-commodity-peer1:3.4
+        image: pedrollovera/k8s-hlf-commodity-peer1:3.5
         # Uncomment the following during development/testing of the image
         # imagePullPolicy: Always
         env:

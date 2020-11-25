@@ -19,7 +19,7 @@ spec:
       containers:
       - name: grainchain-peer1
         # Image used
-        image: pedrollovera/k8s-hlf-grainchain-peer1:3.4
+        image: pedrollovera/k8s-hlf-grainchain-peer1:3.5
         # Uncomment the following during development/testing of the image
         # imagePullPolicy: Always
         env:
@@ -27,14 +27,16 @@ spec:
             value: /var/hyperledger/config
           - name: FABRIC_LOGGING_SPEC
             value: INFO
+          - name: CORE_PEER_MSPCONFIGPATH
+            value: /var/hyperledger/peer.grainchain.io/msp
           - name: CORE_PEER_TLS_ENABLED
             value: "true"
           - name: CORE_PEER_TLS_CERT_FILE
-            value: /var/hyperledger/peer1.grainchain.io/tls-msp/signcerts/cert.pem
+            value: /var/hyperledger/peer.grainchain.io/tls-msp/signcerts/cert.pem
           - name: CORE_PEER_TLS_KEY_FILE
-            value: /var/hyperledger/peer1.grainchain.io/tls-msp/keystore/key.pem
+            value: /var/hyperledger/peer.grainchain.io/tls-msp/keystore/key.pem
           - name: CORE_PEER_TLS_ROOTCERT_FILE
-            value: /var/hyperledger/peer1.grainchain.io/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem
+            value: /var/hyperledger/peer.grainchain.io/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem
           - name: ORDERER_ADDRESS
             value: grainchain-orderer-clusterip:30750
           - name: ORDERER_ADDRESS

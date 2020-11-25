@@ -61,15 +61,11 @@ Set up the environment - copy values or variables from the earlier step
 docker rmi $(docker images -a -q) -f
 
 # These commands to be executed in the k8s folder
-docker build -t pedrollovera/k8s-hlf-grainchain-orderer1:3.4 . -f images/orderer/Dockerfile
-docker build -t pedrollovera/k8s-hlf-grainchain-orderer2:3.4 . -f images/orderer2/Dockerfile
-docker build -t pedrollovera/k8s-hlf-grainchain-orderer3:3.4 . -f images/orderer3/Dockerfile
-docker build -t pedrollovera/k8s-hlf-grainchain-orderer4:3.4 . -f images/orderer4/Dockerfile
-docker build -t pedrollovera/k8s-hlf-grainchain-orderer5:3.4 . -f images/orderer5/Dockerfile
-docker build -t pedrollovera/k8s-hlf-grainchain-peer1:3.4 . -f images/grainchain-peer1/Dockerfile
-docker build -t pedrollovera/k8s-hlf-grainchain-peer2:3.4 . -f images/grainchain-peer2/Dockerfile
+docker build -t pedrollovera/k8s-hlf-grainchain-orderer:3.5 . -f images/orderer/Dockerfile
+docker build -t pedrollovera/k8s-hlf-grainchain-peer1:3.5 . -f images/grainchain-peer1/Dockerfile
+docker build -t pedrollovera/k8s-hlf-grainchain-peer2:3.5 . -f images/grainchain-peer2/Dockerfile
 docker build -t pedrollovera/k8s-hlf-grainchain-cli:3.5 . -f images/grainchain-cli/Dockerfile
-docker build -t pedrollovera/k8s-hlf-commodity-peer1:3.4 . -f images/commodity-peer/Dockerfile
+docker build -t pedrollovera/k8s-hlf-commodity-peer1:3.5 . -f images/commodity-peer1/Dockerfile
 
 5. Push the images to image registry
 ====================================
@@ -83,15 +79,15 @@ Following will push the images to Docker Hub
 > docker login -u <<Docker Hub User ID>>
 
 ** Replace acloudfan with your id **
- docker push pedrollovera/k8s-hlf-grainchain-orderer1:3.4
- docker push pedrollovera/k8s-hlf-grainchain-orderer2:3.4
- docker push pedrollovera/k8s-hlf-grainchain-orderer3:3.4
- docker push pedrollovera/k8s-hlf-grainchain-orderer4:3.4
- docker push pedrollovera/k8s-hlf-grainchain-orderer5:3.4
+ docker push pedrollovera/k8s-hlf-grainchain-orderer:3.5
+ docker push pedrollovera/k8s-hlf-grainchain-orderer2:3.5
+ docker push pedrollovera/k8s-hlf-grainchain-orderer3:3.5
+ docker push pedrollovera/k8s-hlf-grainchain-orderer4:3.5
+ docker push pedrollovera/k8s-hlf-grainchain-orderer5:3.5
  docker push pedrollovera/k8s-hlf-grainchain-cli:3.5
- docker push pedrollovera/k8s-hlf-grainchain-peer1:3.4
- docker push pedrollovera/k8s-hlf-grainchain-peer2:3.4
- docker push pedrollovera/k8s-hlf-commodity-peer1:3.4
+ docker push pedrollovera/k8s-hlf-grainchain-peer1:3.5
+ docker push pedrollovera/k8s-hlf-grainchain-peer2:3.5
+ docker push pedrollovera/k8s-hlf-commodity-peer1:3.5
 
 
 

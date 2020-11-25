@@ -21,7 +21,7 @@ spec:
       - name: grainchain-orderer4
 
         # Image used
-        image: pedrollovera/k8s-hlf-grainchain-orderer4:3.4
+        image: pedrollovera/k8s-hlf-grainchain-orderer:3.5
 
         # Uncomment the following during development/testing of the image
         # imagePullPolicy: Always
@@ -32,23 +32,26 @@ spec:
           # Level of logging
           - name: FABRIC_LOGGING_SPEC
             value: INFO
-            #/var/hyperledger/orderer4.grainchain.io/tls/
+          - name : ORDERER_GENERAL_LOCALMSPDIR
+            value: /var/hyperledger/orderers/orderer4-grainchain-io/msp
+          - name: ORDERER_GENERAL_LISTENPORT
+            value: "30450"
           # TLS SETUP
           - name: ORDERER_GENERAL_TLS_ENABLED
             value: "true"
           - name: ORDERER_GENERAL_TLS_CERTIFICATE
-            value: /var/hyperledger/orderer.grainchain.io/tls-msp/signcerts/cert.pem
+            value: /var/hyperledger/orderers/orderer4-grainchain-io/tls-msp/signcerts/cert.pem
           - name: ORDERER_GENERAL_TLS_PRIVATEKEY
-            value: /var/hyperledger/orderer.grainchain.io/tls-msp/keystore/key.pem
+            value: /var/hyperledger/orderers/orderer4-grainchain-io/tls-msp/keystore/key.pem
           - name: ORDERER_GENERAL_TLS_ROOTCAS
-            value: /var/hyperledger/orderer.grainchain.io/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem
+            value: /var/hyperledger/orderers/orderer4-grainchain-io/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem
           # RAFT SETUP
           - name: ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE
-            value: /var/hyperledger/orderer.grainchain.io/tls-msp/signcerts/cert.pem
+            value: /var/hyperledger/orderers/orderer4-grainchain-io/tls-msp/signcerts/cert.pem
           - name: ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY
-            value: /var/hyperledger/orderer.grainchain.io/tls-msp/keystore/key.pem
+            value: /var/hyperledger/orderers/orderer4-grainchain-io/tls-msp/keystore/key.pem
           - name: ORDERER_GENERAL_CLUSTER_ROOTCAS
-            value: /var/hyperledger/orderer.grainchain.io/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem
+            value: /var/hyperledger/orderers/orderer4-grainchain-io/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem
       
 
         volumeMounts:
